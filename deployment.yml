@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: personapp
+  name: personapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personapp
+  template:
+    metadata:
+      labels:
+        app: personapp
+    spec:
+      containers:
+      - image: sanjitguin/repo:JENKINS-69_main_a87095d271a1ef77383741e953ada42f3d8e2a25
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        name: personapp
+        env:
+        - name: spring.profiles.active
+          value: "local"             
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: personapp-service
+spec:
+  selector:
+    app: personapp
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30003  
