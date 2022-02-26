@@ -21,6 +21,7 @@ podTemplate(containers: [
       git url: 'https://github.com/sanjitguin/personapp.git', branch: 'main'
       withCredentials([usernamePassword(credentialsId: 'git-username-pwd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
          sh('''
+              docker --version
               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
               git config --global user.email "sanjitguin@gmail.com"
               git config --global user.name "sanjit guin"
