@@ -22,6 +22,8 @@ podTemplate(containers: [
       withCredentials([usernamePassword(credentialsId: 'git-username-pwd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
          sh('''
               git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+              git config --global user.email "sanjitguin@gmail.com"
+              git config --global user.name "sanjit guin"
               echo abc > t.txt
               git add t.txt
               git commit -m test-commit
