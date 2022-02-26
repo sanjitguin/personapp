@@ -18,8 +18,7 @@ podTemplate(containers: [
 
     
     stages {
-    stage ("Prompt for input") {
-      steps {
+      stage('maven build personapp') {
         script {
           env.USERNAME = input message: 'Please enter the username',
                              parameters: [string(defaultValue: '',
@@ -33,8 +32,7 @@ podTemplate(containers: [
         echo "Username: ${env.USERNAME}"
         echo "Password: ${env.PASSWORD}"
       }
-    }
-  }
+    }  
      
   }
 }
