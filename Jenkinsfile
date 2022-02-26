@@ -34,7 +34,8 @@ podTemplate(containers: [
     stage('git argocd repo update') {
       withCredentials([gitUsernamePassword(credentialsId: 'git-username-pwd',
                  gitToolName: 'git-tool')]) {
-         sh 'git config --global user.email sanjitguin@gmail.com'
+         sh 'git config user.email sanjitguin@gmail.com'
+         sh 'git config user.name sanjit guin'
          sh 'echo abc > t.txt' 
          sh 'git add t.txt'
          sh 'git commit -m test-commit'
