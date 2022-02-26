@@ -43,19 +43,13 @@ podTemplate(containers: [
           sh 'pwd'
           sh 'ls -l'
           print 'username=' + username + 'password=' + password
-          IMAGE_TAG = "JENKINS-${env.BUILD_ID}_${BRANCH_NAME}_${env.DOCKER_TAG}".trim()
+          IMAGE_TAG = "JENKINS-${env.BUILD_ID}_${BRANCH_NAME}_${env.DOCKER_TAG}_A".trim()
           sh 'docker login -u ${username} -p ${password}'
           sh "docker build -t ${repository}:${IMAGE_TAG} ."
           sh "docker push ${repository}:${IMAGE_TAG}"
           sh 'kubectl apply -f deployment.yml' 
           sh 'docker logout'
         }
-      }
-    }
-
-    stage('deploy to k8') {
-      steps{
-        sh 'echo deployment done'
       }
     }
   }
