@@ -17,14 +17,24 @@ podTemplate(containers: [
       env.BRANCH_NAME = 'main'
 
     
-    stage('git push') {
-      withCredentials([usernamePassword(credentialsId: 'git-username-pwd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
-         sh('''
-              pwd
-              ls -l
-         ''')
+    stages {
+    stage ("Prompt for input") {
+      steps {
+        script {
+          env.USERNAME = input message: 'Please enter the username',
+                             parameters: [string(defaultValue: '',
+                                          description: '',
+                                          name: 'Username')]
+          env.PASSWORD = input message: 'Please enter the password',
+                             parameters: [password(defaultValue: '',
+                                          description: '',
+                                          name: 'Password')]
+        }
+        echo "Username: ${env.USERNAME}"
+        echo "Password: ${env.PASSWORD}"
       }
     }
+  }
      
   }
 }
