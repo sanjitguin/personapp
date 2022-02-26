@@ -24,6 +24,7 @@ podTemplate(containers: [
 
     stage('maven build personapp') {
             container('maven') {
+              sh 'git branch'
               sh 'mvn --version'
               sh 'mvn -B -ntp clean package -DskipTests'
             }
