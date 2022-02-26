@@ -45,8 +45,8 @@ podTemplate(containers: [
           print 'username=' + username + 'password=' + password
           IMAGE_TAG = "JENKINS-${env.BUILD_ID}_${BRANCH_NAME}_${env.TAG}_A".trim()
           sh 'docker login -u ${username} -p ${password}'
-          sh "docker build -t ${repository}:${IMAGE_TAG} ."
-          sh "docker push ${repository}:${IMAGE_TAG}"
+          sh 'docker build -t ${repository}:${IMAGE_TAG} .'
+          sh 'docker push ${repository}:${IMAGE_TAG}'
           sh 'docker logout'
         }
       }
