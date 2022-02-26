@@ -4,13 +4,7 @@ podTemplate(containers: [
       image: 'maven:latest', 
       command: 'sleep', 
       args: '99d'
-      ),
-   containerTemplate(
-       name: 'docker', 
-       image: 'docker', 
-       ttyEnabled: true, 
-       command: 'cat'
-       )      
+      )      
   ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
@@ -22,26 +16,20 @@ podTemplate(containers: [
       env.REPOSITORY = 'sanjitguin/repo'
       env.BRANCH_NAME = 'main'
 
-    stage('maven build personapp') {
-         git url: 'https://github.com/sanjitguin/personapp.git', branch: 'main'
-            container('maven') {
-              sh 'git branch'
-              sh 'mvn --version'
-            }
-        
-    }
     
-    stage('git argocd repo update') {
-      withCredentials([gitUsernamePassword(credentialsId: 'git-username-pwd',
-                 gitToolName: 'git-tool')]) {
-         sh 'git config user.email sanjitguin@gmail.com'
-         sh 'git config user.name sanjit guin'
-         sh 'echo abc > t.txt' 
-         sh 'git add t.txt'
-         sh 'git commit -m test-commit'
-         sh 'git push orgin main'
+    stage('git push') {
+      git url: 'https://github.com/sanjitguin/personapp.git', branch: 'main'
+      withCredentials([usernamePassword(credentialsId: 'git-username-pwd', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]){    
+         sh('''
+              git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+              echo abc > t.txt
+              git add t.txt
+              git commit -m test-commit
+              git push origin HEAD:main
+         ''')
       }
-    }  
+    }
+     
   }
 }
 
