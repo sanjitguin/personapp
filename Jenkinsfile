@@ -23,7 +23,6 @@ podTemplate(containers: [
       env.BRANCH_NAME = 'main'
 
     stage('maven build personapp') {
-            git url: 'https://github.com/sanjitguin/personapp.git', branch: 'main'
             container('maven') {
               sh 'mvn --version'
               sh 'mvn -B -ntp clean package -DskipTests'
