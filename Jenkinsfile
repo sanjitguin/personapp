@@ -19,7 +19,7 @@ podTemplate(containers: [
 {    
   node(POD_LABEL) {
 
-      env.repository = 'sanjitguin/repo'
+      env.REPOSITORY = 'sanjitguin/repo'
       env.BRANCH_NAME = 'main'
 
     stage('maven build personapp') {
@@ -45,8 +45,8 @@ podTemplate(containers: [
           print 'username=' + username + 'password=' + password
           IMAGE_TAG = "JENKINS-${env.BUILD_ID}_${BRANCH_NAME}_${env.TAG}_A".trim()
           sh 'docker login -u ${username} -p ${password}'
-          sh 'docker build -t ${repository}:${IMAGE_TAG} .'
-          sh 'docker push ${repository}:${IMAGE_TAG}'
+          sh 'docker build -t ${IMAGE_TAG} .'
+          sh 'docker push ${env.REPOSITORY}:${IMAGE_TAG}'
           sh 'docker logout'
         }
       }
