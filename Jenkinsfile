@@ -39,6 +39,7 @@ podTemplate(containers: [
          sh 'git commit -m test-commit'
          sh 'git push orgin main'
       }
+    }  
   }
 }
 
