@@ -27,32 +27,18 @@ podTemplate(containers: [
             container('maven') {
               sh 'git branch'
               sh 'mvn --version'
-              sh 'mvn -B -ntp clean package -DskipTests'
             }
         
     }
     
-    stage('docker build image') {
-      withCredentials([
-            usernamePassword(credentialsId: 'sanjitguin-docker',
-              usernameVariable: 'username',
-              passwordVariable: 'password')
-          ]) {
-        env.TAG = getTag()
-
-        container('docker') {
-          sh 'pwd'
-          sh 'ls -l'
-          print 'username=' + username + 'password=' + password
-          IMAGE_TAG = "JENKINS-${env.BUILD_ID}_${BRANCH_NAME}_${env.TAG}".trim()
-          print 'IMAGE_TAG : '+IMAGE_TAG
-          sh 'docker login -u ${username} -p ${password}'
-          sh "docker build -t ${env.REPOSITORY}:${IMAGE_TAG} ."
-          sh "docker push ${env.REPOSITORY}:${IMAGE_TAG}"
-          sh 'docker logout'
-        }
+    stage('git argocd repo update') {
+      withCredentials([gitUsernamePassword(credentialsId: 'git-username-pwd',
+                 gitToolName: 'git-tool')]) {
+         sh 'echo abc > t.txt' 
+         sh 'git add t.txt'
+         sh 'git commit -m test-commit'
+         sh 'git push'
       }
-    }
   }
 }
 
