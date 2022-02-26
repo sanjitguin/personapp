@@ -37,7 +37,7 @@ podTemplate(containers: [
          sh 'echo abc > t.txt' 
          sh 'git add t.txt'
          sh 'git commit -m test-commit'
-         sh 'git push'
+         sh 'git push orgin main'
       }
   }
 }
